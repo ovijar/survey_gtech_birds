@@ -637,3 +637,7 @@ textarea {
 .mb-lg {
     margin-bottom: var(--spacing-lg);
 }
+/* Form Pages (Multi-step) */
+.form-page { display: none; animation: fadeIn 0.4s ease-out; }
+.form-page.active { display: block; }
+.page-title { font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--spacing-xl); padding-bottom: var(--spacing-md); border-bottom: 2px solid var(--color-primary); }
