@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <!-- SEO Meta Tags -->
     <title>Survey PWA - Environmental Survey Data Collection</title>
@@ -37,15 +37,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=2">
 </head>
 
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>🌿 Environmental Survey</h1>
-            <p>Offline-first data collection</p>
+            <img src="./icons/icon-mbns.png" alt="Mountain Bird Network Survey Logo" class="header-logo"
+                style="max-width: 100px; margin-bottom: 1rem;">
+            <h1>Mountain Bird NetworkSurvey</h1>
+            <p>data collection</p>
         </header>
 
         <!-- Status Bar -->
@@ -192,7 +194,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="./config.js"></script>
+    <script src="./config.js?v=2"></script>
     <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.min.js"></script>
     <script src="./db.js"></script>
     <script src="./sync.js"></script>

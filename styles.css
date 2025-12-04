@@ -582,30 +582,99 @@ textarea {
 /* ============================================
    Responsive Design
    ============================================ */
+/* ============================================
+   Responsive Design (Mobile First Optimizations)
+   ============================================ */
 @media (max-width: 768px) {
     .container {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
+        max-width: 100%;
+    }
+
+    .header {
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-md) 0;
     }
 
     .header h1 {
-        font-size: var(--font-size-2xl);
+        font-size: 1.75rem;
+        /* Smaller title for mobile */
     }
 
     .form-card {
-        padding: var(--spacing-lg);
+        padding: var(--spacing-md);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        /* Lighter shadow for performance */
     }
 
     .form-row {
         grid-template-columns: 1fr;
+        /* Stack inputs vertically */
+        gap: var(--spacing-md);
     }
 
     .status-bar {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        /* Keep in row but wrap if needed */
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+
+    .status-item {
+        font-size: var(--font-size-xs);
+        background: rgba(0, 0, 0, 0.03);
+        padding: 4px 8px;
+        border-radius: var(--radius-md);
     }
 
     .form-actions {
-        flex-direction: column;
+        flex-direction: column-reverse;
+        /* Primary action on top/bottom depending on preference, usually column is fine */
+        gap: var(--spacing-md);
+    }
+
+    .btn {
+        width: 100%;
+        /* Full width buttons */
+        padding: var(--spacing-md);
+        /* Larger touch target */
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Specific optimizations for smaller phones */
+    :root {
+        --spacing-lg: 1.25rem;
+        --spacing-xl: 1.5rem;
+    }
+
+    body {
+        /* Prevent horizontal scroll */
+        overflow-x: hidden;
+    }
+
+    /* iOS Safe Area Support */
+    .container {
+        padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+        padding-left: calc(var(--spacing-sm) + env(safe-area-inset-left));
+        padding-right: calc(var(--spacing-sm) + env(safe-area-inset-right));
+    }
+
+    /* Prevent auto-zoom on inputs in iOS */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    .page-title {
+        font-size: 1.25rem;
+        margin-bottom: var(--spacing-lg);
     }
 }
 
@@ -626,4 +695,23 @@ textarea {
 
 .mb-lg {
     margin-bottom: var(--spacing-lg);
+}
+
+/* Form Pages (Multi-step) */
+.form-page {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.form-page.active {
+    display: block;
+}
+
+.page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-navy-blue);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-tech-gold);
 }
