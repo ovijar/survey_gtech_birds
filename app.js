@@ -346,6 +346,11 @@ function resetForm() {
     if (CONFIG.FEATURES.AUTO_START_TIMER) {
         startTimer();
     }
+
+    // Go back to first page if navigation function exists
+    if (typeof goToPage1 === 'function') {
+        goToPage1();
+    }
 }
 
 // ============================================
