@@ -24,35 +24,39 @@
     --color-rat-cap: #FFCD00;
     --color-new-horizon: #E04F39;
 
-    /* Georgia Tech Brand Colors - Bright (Web-only) */
-    --color-bright-purple: #7800FF;
-    --color-bright-blue: #2961FF;
-    --color-bright-electric: #00FFFF;
-    --color-bright-canopy: #00EC9C;
-    --color-bright-buzz: #FFCC00;
-    --color-bright-horizon: #FF640F;
+    /* Application Color Mapping - Light Theme */
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F9F6E5;
+    /* Diploma */
+    --color-bg-tertiary: #F0F0F0;
 
-    /* Application Color Mapping */
-    --color-bg-primary: #001f3f;
-    --color-bg-secondary: #003057;
-    --color-bg-tertiary: #00416a;
-    --color-surface: rgba(179, 163, 105, 0.08);
-    --color-surface-hover: rgba(179, 163, 105, 0.15);
+    --color-surface: #FFFFFF;
+    --color-surface-hover: #F9F9F9;
 
     --color-primary: #B3A369;
-    --color-primary-light: #d4c89a;
+    /* Tech Gold */
     --color-primary-dark: #857437;
+    --color-primary-light: #D4C89A;
 
-    --color-accent: #008C95;
-    --color-accent-light: #64CCC9;
+    --color-accent: #003057;
+    /* Navy Blue */
+    --color-accent-light: #00416A;
 
-    --color-success: #00EC9C;
-    --color-warning: #FFCD00;
+    --color-success: #008C95;
+    /* Olympic Teal */
+    --color-warning: #EAAA00;
+    /* Buzz Gold */
     --color-error: #E04F39;
+    /* New Horizon */
 
-    --color-text-primary: #F9F6E5;
-    --color-text-secondary: #D6DBD4;
-    --color-text-muted: #A4925A;
+    --color-text-primary: #003057;
+    /* Navy Blue for main text */
+    --color-text-secondary: #54585A;
+    /* Gray Matter */
+    --color-text-muted: #857437;
+
+    --color-border: #D6DBD4;
+    /* Pi Mile */
 
     /* Typography */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -80,11 +84,11 @@
     --radius-full: 9999px;
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-    --shadow-glow: 0 0 20px rgba(179, 163, 105, 0.4);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 15px rgba(179, 163, 105, 0.2);
 
     /* Transitions */
     --transition-fast: 150ms ease-in-out;
@@ -103,7 +107,7 @@
 
 body {
     font-family: var(--font-family);
-    background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F9F6E5 100%);
     color: var(--color-text-primary);
     min-height: 100vh;
     line-height: 1.6;
@@ -131,13 +135,11 @@ body {
 
 .header h1 {
     font-size: var(--font-size-3xl);
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 800;
+    color: var(--color-navy-blue);
     margin-bottom: var(--spacing-sm);
     animation: fadeInDown 0.6s ease-out;
+    letter-spacing: -0.02em;
 }
 
 .header p {
@@ -156,10 +158,10 @@ body {
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
     padding: var(--spacing-md);
-    background: var(--color-surface);
-    backdrop-filter: blur(10px);
+    background: white;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
     animation: fadeIn 0.6s ease-out 0.4s both;
 }
 
@@ -168,6 +170,8 @@ body {
     align-items: center;
     gap: var(--spacing-sm);
     font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-primary);
 }
 
 .status-indicator {
@@ -179,12 +183,12 @@ body {
 
 .status-indicator.online {
     background: var(--color-success);
-    box-shadow: 0 0 10px var(--color-success);
+    box-shadow: 0 0 8px var(--color-success);
 }
 
 .status-indicator.offline {
     background: var(--color-error);
-    box-shadow: 0 0 10px var(--color-error);
+    box-shadow: 0 0 8px var(--color-error);
 }
 
 .timer-display {
@@ -195,16 +199,16 @@ body {
 }
 
 .timer-display.warning {
-    color: var(--color-warning);
+    color: var(--color-error);
     animation: pulseWarning 1s ease-in-out infinite;
 }
 
 .pending-count {
-    background: var(--color-primary);
+    background: var(--color-navy-blue);
     color: white;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: 2px 8px;
     border-radius: var(--radius-full);
-    font-weight: 600;
+    font-weight: 700;
     font-size: var(--font-size-xs);
 }
 
@@ -212,13 +216,33 @@ body {
    Form Card
    ============================================ */
 .form-card {
-    background: var(--color-surface);
-    backdrop-filter: blur(20px);
+    background: white;
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
     animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+/* ============================================
+   Form Pages (Multi-step)
+   ============================================ */
+.form-page {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.form-page.active {
+    display: block;
+}
+
+.page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-navy-blue);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-tech-gold);
 }
 
 /* ============================================
@@ -239,7 +263,7 @@ label {
     display: block;
     margin-bottom: var(--spacing-sm);
     color: var(--color-text-secondary);
-    font-weight: 500;
+    font-weight: 600;
     font-size: var(--font-size-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -250,20 +274,21 @@ textarea,
 select {
     width: 100%;
     padding: var(--spacing-md);
-    background: var(--color-bg-secondary);
-    border: 2px solid transparent;
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     color: var(--color-text-primary);
     font-family: var(--font-family);
     font-size: var(--font-size-base);
     transition: all var(--transition-base);
     outline: none;
+    box-shadow: var(--shadow-sm);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: var(--color-primary);
+    border-color: var(--color-tech-gold);
     box-shadow: 0 0 0 3px rgba(179, 163, 105, 0.2);
     transform: translateY(-1px);
 }
@@ -271,7 +296,7 @@ select:focus {
 input:hover,
 textarea:hover,
 select:hover {
-    background: var(--color-bg-tertiary);
+    border-color: var(--color-tech-medium-gold);
 }
 
 textarea {
@@ -296,8 +321,8 @@ textarea {
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--color-bg-secondary);
-    border: 2px solid var(--color-primary);
+    background: white;
+    border: 1px solid var(--color-tech-gold);
     border-radius: var(--radius-md);
     margin-top: var(--spacing-xs);
     max-height: 250px;
@@ -311,13 +336,18 @@ textarea {
     padding: var(--spacing-md);
     cursor: pointer;
     transition: all var(--transition-fast);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
 }
 
 .suggestion-item:hover,
 .suggestion-item.active {
-    background: var(--color-primary);
-    color: white;
+    background: var(--color-diploma);
+    color: var(--color-navy-blue);
 }
 
 .suggestion-item .common-name {
@@ -327,12 +357,8 @@ textarea {
 
 .suggestion-item .scientific-name {
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     font-style: italic;
-}
-
-.suggestion-item:hover .scientific-name {
-    color: rgba(255, 255, 255, 0.8);
 }
 
 /* ============================================
@@ -351,7 +377,7 @@ textarea {
     align-items: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm) var(--spacing-md);
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    background: var(--color-navy-blue);
     color: white;
     border-radius: var(--radius-full);
     font-size: var(--font-size-sm);
@@ -375,11 +401,12 @@ textarea {
     justify-content: center;
     border-radius: var(--radius-full);
     transition: all var(--transition-fast);
+    opacity: 0.8;
 }
 
 .species-chip button:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
+    opacity: 1;
 }
 
 /* ============================================
@@ -401,33 +428,16 @@ textarea {
     overflow: hidden;
 }
 
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.2);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::before {
-    width: 300px;
-    height: 300px;
-}
-
 .btn-primary {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: white;
+    background: var(--color-tech-gold);
+    color: var(--color-navy-blue);
     box-shadow: var(--shadow-md);
 }
 
 .btn-primary:hover {
+    background: var(--color-tech-medium-gold);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-primary:active {
@@ -435,8 +445,8 @@ textarea {
 }
 
 .btn-primary:disabled {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-muted);
+    background: var(--color-pi-mile);
+    color: var(--color-text-secondary);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -444,12 +454,12 @@ textarea {
 
 .btn-secondary {
     background: transparent;
-    color: var(--color-primary);
-    border: 2px solid var(--color-primary);
+    color: var(--color-navy-blue);
+    border: 2px solid var(--color-navy-blue);
 }
 
 .btn-secondary:hover {
-    background: var(--color-primary);
+    background: var(--color-navy-blue);
     color: white;
 }
 
@@ -461,14 +471,14 @@ textarea {
     align-items: center;
     justify-content: center;
     font-size: var(--font-size-xl);
-    background: var(--color-accent);
+    background: var(--color-navy-blue);
     color: white;
     border-radius: var(--radius-md);
     flex-shrink: 0;
 }
 
 .btn-icon:hover {
-    background: var(--color-accent-light);
+    background: var(--color-bold-blue);
     transform: scale(1.05);
 }
 
@@ -600,26 +610,6 @@ textarea {
 }
 
 /* ============================================
-   Scrollbar Styling
-   ============================================ */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--color-bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--color-primary);
-    border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary-light);
-}
-
-/* ============================================
    Utility Classes
    ============================================ */
 .hidden {
@@ -637,7 +627,3 @@ textarea {
 .mb-lg {
     margin-bottom: var(--spacing-lg);
 }
-/* Form Pages (Multi-step) */
-.form-page { display: none; animation: fadeIn 0.4s ease-out; }
-.form-page.active { display: block; }
-.page-title { font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--spacing-xl); padding-bottom: var(--spacing-md); border-bottom: 2px solid var(--color-primary); }
