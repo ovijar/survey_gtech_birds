@@ -228,8 +228,25 @@ body {
    Form Pages (Multi-step)
    ============================================ */
 .form-page {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
     animation: fadeIn 0.4s ease-out;
+    /* keep hidden when not active */
+    display: none;
+}
+
+/* Ensure active page shows as flex */
+.form-page.active {
+    display: flex;
+}
+
+/* Push buttons to bottom */
+.form-actions {
+    margin-top: auto;
+    display: flex;
+    gap: var(--spacing-md);
 }
 
 .form-page.active {

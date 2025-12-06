@@ -10,8 +10,7 @@ const urlsToCache = [
     './config.js',
     './species.json',
     './manifest.json',
-    './icons/icon-192.png',
-    './icons/icon-512.png',
+    './icons/icon-mbns.png',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
     'https://unpkg.com/dexie@3.2.4/dist/dexie.min.js'
 ];

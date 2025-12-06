@@ -48,11 +48,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadSpeciesData() {
     try {
         const response = await fetch('./species.json');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         speciesData = await response.json();
-        console.log(`Loaded ${speciesData.length} species`);
+        console.log(`Loaded ${speciesData.length} species from JSON file`);
     } catch (error) {
-        console.error('Error loading species data:', error);
-        speciesData = [];
+        console.warn('Failed to fetch species.json, attempting fallback from embedded data:', error);
+        if (Array.isArray(window.speciesData)) {
+            speciesData = window.speciesData;
+            console.log(`Loaded ${speciesData.length} species from embedded data`);
+        } else {
+            console.error('No species data available');
+            speciesData = [];
+        }
     }
 }
 
@@ -67,7 +74,137 @@ function setupEventListeners() {
 
     // Form submission
     elements.form.addEventListener('submit', handleFormSubmit);
-    elements.resetBtn.addEventListener('click', resetForm);
+    // Reset the whole form (page 1) and clear observations
+    function resetForm() {
+        // Clear page 1 inputs
+        document.getElementById('pcLocationId').value = '';
+        document.getElementById('day').value = '';
+        document.getElementById('month').value = '';
+        document.getElementById('year').value = '';
+        document.getElementById('startTime').value = '';
+        document.getElementById('observer').value = '';
+
+        // Clear species selection
+        selectedSpecies = [];
+        renderSpeciesChips();
+        updateSpeciesHiddenInput();
+
+        // Clear observation fields
+        elements.distanceInput.value = '';
+        elements.directionsInput.value = '';
+        elements.detailsInput.value = '';
+        elements.notesInput.value = '';
+
+        // Clear observations list
+        observations = [];
+        renderObservations();
+        elements.observationsHidden.value = '';
+
+        // Return to page 1 view
+        goToPage1();
+    }
+
+    // -------------------------------------------
+    // Observation handling (species + extra data)
+    // -------------------------------------------
+    let observations = [];
+
+    function addObservation() {
+        const speciesId = elements.speciesSelect.value;
+        const species = speciesData.find(s => s.id === parseInt(speciesId));
+        if (!species) {
+            alert('Select a species first');
+            return;
+        }
+        const observation = {
+            speciesId: species.id,
+            distance: elements.distanceInput.value.trim(),
+            directions: elements.directionsInput.value.trim(),
+            details: elements.detailsInput.value.trim(),
+            notes: elements.notesInput.value.trim()
+        };
+        observations.push(observation);
+        renderObservations();
+        // clear fields for next entry
+        elements.speciesSelect.value = '';
+        elements.distanceInput.value = '';
+        elements.directionsInput.value = '';
+        elements.detailsInput.value = '';
+        elements.notesInput.value = '';
+        // update hidden input for form submission
+        elements.observationsHidden.value = JSON.stringify(observations);
+    }
+
+    function renderObservations() {
+        const list = elements.observationsList;
+        list.innerHTML = '';
+        observations.forEach((obs, idx) => {
+            const species = speciesData.find(s => s.id === obs.speciesId);
+            const item = document.createElement('div');
+            item.className = 'observation-item';
+            item.dataset.idx = idx;
+            item.innerHTML = `
+            <strong>${species ? species.common_name : 'Unknown'}</strong>
+            <p>Distance: ${obs.distance}</p>
+            <p>Directions: ${obs.directions}</p>
+            <p>Details: ${obs.details}</p>
+            <p>Notes: ${obs.notes}</p>
+            <button type="button" class="edit-observation btn btn-sm btn-secondary" data-idx="${idx}">Edit</button>
+            <button type="button" class="delete-observation btn btn-sm btn-danger" data-idx="${idx}">Delete</button>
+        `;
+            list.appendChild(item);
+        });
+    }
+
+    function editObservation(idx) {
+        const obs = observations[idx];
+        const species = speciesData.find(s => s.id === obs.speciesId);
+        // Populate fields for editing
+        elements.speciesSelect.value = species ? species.id : '';
+        elements.distanceInput.value = obs.distance;
+        elements.directionsInput.value = obs.directions;
+        elements.detailsInput.value = obs.details;
+        elements.notesInput.value = obs.notes;
+        // Remove the old entry (will be re‑added on save)
+        observations.splice(idx, 1);
+        renderObservations();
+        elements.observationsHidden.value = JSON.stringify(observations);
+    }
+
+    function deleteObservation(idx) {
+        observations.splice(idx, 1);
+        renderObservations();
+        elements.observationsHidden.value = JSON.stringify(observations);
+    }
+
+    // Hook up observation UI events (called after DOMContentLoaded)
+    function setupObservationEvents() {
+        elements.addMoreBtn.addEventListener('click', addObservation);
+        elements.observationsList.addEventListener('click', e => {
+            if (e.target.classList.contains('edit-observation')) {
+                const idx = parseInt(e.target.dataset.idx);
+                editObservation(idx);
+            } else if (e.target.classList.contains('delete-observation')) {
+                const idx = parseInt(e.target.dataset.idx);
+                deleteObservation(idx);
+            }
+        });
+    }
+
+    // Extend existing setupEventListeners to include observation events
+    const originalSetupEventListeners = setupEventListeners;
+    function setupEventListeners() {
+        originalSetupEventListeners();
+        // Additional elements for observations (ensure they exist)
+        elements.distanceInput = document.getElementById('distanceInput');
+        elements.directionsInput = document.getElementById('directionsInput');
+        elements.detailsInput = document.getElementById('detailsInput');
+        elements.notesInput = document.getElementById('notesInput');
+        elements.addMoreBtn = document.getElementById('addMoreBtn');
+        elements.observationsList = document.getElementById('observationsList');
+        elements.observationsHidden = document.getElementById('observationsHidden');
+        setupObservationEvents();
+    }
 
     // Online/offline detection
     window.addEventListener('online', updateOnlineStatus);
