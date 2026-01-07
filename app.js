@@ -110,28 +110,35 @@ function setupEventListeners() {
     let observations = [];
 
     function addObservation() {
-        const speciesId = elements.speciesSelect.value;
-        const species = speciesData.find(s => s.id === parseInt(speciesId));
+        const speciesName = elements.speciesInput.value.trim();
+        // Try to find the species object based on input name
+        const species = speciesData.find(s => s.common_name === speciesName || s.scientific_name === speciesName);
+
         if (!species) {
-            alert('Select a species first');
+            alert('Please search and select a valid species');
             return;
         }
+
         const observation = {
             speciesId: species.id,
+            speciesName: species.common_name, // Store name for easier display
             distance: elements.distanceInput.value.trim(),
             directions: elements.directionsInput.value.trim(),
             details: elements.detailsInput.value.trim(),
             notes: elements.notesInput.value.trim()
         };
+
         observations.push(observation);
         renderObservations();
-        // clear fields for next entry
-        elements.speciesSelect.value = '';
+
+        // Clear fields for next entry
+        elements.speciesInput.value = '';
         elements.distanceInput.value = '';
         elements.directionsInput.value = '';
         elements.detailsInput.value = '';
         elements.notesInput.value = '';
-        // update hidden input for form submission
+
+        // Update hidden input for form submission
         elements.observationsHidden.value = JSON.stringify(observations);
     }
 
@@ -139,19 +146,31 @@ function setupEventListeners() {
         const list = elements.observationsList;
         list.innerHTML = '';
         observations.forEach((obs, idx) => {
-            const species = speciesData.find(s => s.id === obs.speciesId);
             const item = document.createElement('div');
             item.className = 'observation-item';
-            item.dataset.idx = idx;
+            // Simple styling for readability
+            item.style.border = '1px solid #ddd';
+            item.style.padding = '10px';
+            item.style.marginBottom = '10px';
+            item.style.borderRadius = '4px';
+
             item.innerHTML = `
-            <strong>${species ? species.common_name : 'Unknown'}</strong>
-            <p>Distance: ${obs.distance}</p>
-            <p>Directions: ${obs.directions}</p>
-            <p>Details: ${obs.details}</p>
-            <p>Notes: ${obs.notes}</p>
-            <button type="button" class="edit-observation btn btn-sm btn-secondary" data-idx="${idx}">Edit</button>
-            <button type="button" class="delete-observation btn btn-sm btn-danger" data-idx="${idx}">Delete</button>
-        `;
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <strong>${obs.speciesName}</strong>
+                        <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                            ${obs.distance ? `Distance: ${obs.distance}m<br>` : ''}
+                            ${obs.directions ? `Directions: ${obs.directions}<br>` : ''}
+                            ${obs.details ? `Details: ${obs.details}<br>` : ''}
+                            ${obs.notes ? `Notes: ${obs.notes}` : ''}
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="edit-observation btn btn-sm btn-secondary" style="margin-right: 5px;" data-idx="${idx}">Edit</button>
+                        <button type="button" class="delete-observation btn btn-sm btn-danger" data-idx="${idx}">Delete</button>
+                    </div>
+                </div>
+            `;
             list.appendChild(item);
         });
     }
@@ -159,22 +178,29 @@ function setupEventListeners() {
     function editObservation(idx) {
         const obs = observations[idx];
         const species = speciesData.find(s => s.id === obs.speciesId);
+
         // Populate fields for editing
-        elements.speciesSelect.value = species ? species.id : '';
+        elements.speciesInput.value = species ? species.common_name : '';
         elements.distanceInput.value = obs.distance;
         elements.directionsInput.value = obs.directions;
         elements.detailsInput.value = obs.details;
         elements.notesInput.value = obs.notes;
-        // Remove the old entry (will be re‑added on save)
+
+        // Remove the old entry (it will be re-added when they click Add More)
         observations.splice(idx, 1);
         renderObservations();
         elements.observationsHidden.value = JSON.stringify(observations);
+
+        // Scroll to top of form to help user see they are editing
+        elements.speciesInput.scrollIntoView({ behavior: 'smooth' });
     }
 
     function deleteObservation(idx) {
-        observations.splice(idx, 1);
-        renderObservations();
-        elements.observationsHidden.value = JSON.stringify(observations);
+        if (confirm('Are you sure you want to delete this observation?')) {
+            observations.splice(idx, 1);
+            renderObservations();
+            elements.observationsHidden.value = JSON.stringify(observations);
+        }
     }
 
     // Hook up observation UI events (called after DOMContentLoaded)
